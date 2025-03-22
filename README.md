@@ -10,3 +10,6 @@ Tasks
 - Optimise code, write clean code
 - write more prompts
 Test after each step of the task.
+
+### Resources
+[Get gmail api](https://mailtrap.io/blog/send-emails-with-gmail-api/#JavaScript-browser)
