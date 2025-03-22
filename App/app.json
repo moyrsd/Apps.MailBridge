@@ -1,0 +1,16 @@
+{
+    "id": "7e8a7a3b-2653-4731-9541-45c51ab3582c",
+    "version": "0.0.1",
+    "requiredApiVersion": "^1.44.0",
+    "iconFile": "icon.png",
+    "author": {
+        "name": "This project bridges the great divide most naturally with a Rocket.Chat App that responds to natural language instructions and brings the legacy email world right into every Rocket.Chat conversation for every user.",
+        "homepage": "https://github.com/moyrsd",
+        "support": "deeproyrs@gmail.com"
+    },
+    "name": "MailBridge",
+    "nameSlug": "mailbridge",
+    "classFile": "MailBridgeApp.ts",
+    "description": "Messaging systems such as Rocket.Chat were supposed to be replacing legacy email for communications and collaboration since the early nineteen nineties. But even after three decades of evolution and struggle, half the world still hangs onto legacy email worldwide despite most have grown up with SMS and asynchronous messaging.",
+    "implements": []
+}

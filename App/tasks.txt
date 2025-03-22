@@ -1,0 +1,5 @@
+deploy is working (checks server and everything)
+Create a hello world 
+Write mail receipt using notify
+Write promt And see if if it is working to give a summerize mail
+configure Gmail api and send mail done 
