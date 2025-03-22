@@ -5,4 +5,8 @@ Tasks
 - Write prompt, see if it is giving a valid email
 - Send that mail using Gmail Api
 - Instead of hardcoding credentials create a settings menu to input them
+- Read mails
+- Connect everything and it should work
+- Optimise code, write clean code
+- write more prompts
 Test after each step of the task.
