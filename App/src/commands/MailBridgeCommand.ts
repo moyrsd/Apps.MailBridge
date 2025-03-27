@@ -27,7 +27,7 @@ export class MailBridgeCommand implements ISlashCommand {
         const apiEndpoint =
             "https://api.deepinfra.com/v1/openai/chat/completions";
 
-        const API_KEY = "agfxrb2BuLl0tUQBfGfkY0q3Lw7UtMVe";
+        const API_KEY = "4ZdqVwe3NCwBXAjuQEEe5te5rluXx5Ko";
         const user = context.getSender();
         const room = context.getRoom();
         const threadId = context.getThreadId();

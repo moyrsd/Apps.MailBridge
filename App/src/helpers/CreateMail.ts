@@ -10,13 +10,13 @@ import {
     SlashCommandContext,
 } from "@rocket.chat/apps-engine/definition/slashcommands";
 import { notifyMessage } from "./NotifyMessage";
-function createBody() {
+function createBody(prompt: string) {
     return {
         model: "meta-llama/Llama-3.2-11B-Vision-Instruct",
         messages: [
             {
                 role: "user",
-                content: "Hello!",
+                content: prompt,
             },
         ],
     };
@@ -28,6 +28,7 @@ export async function llmRequest(
     read: IRead,
     modify: IModify,
     http: IHttp,
+    prompt: string,
     apiEndpoint: string,
     apiKey: string,
     threadId?: string
@@ -37,7 +38,7 @@ export async function llmRequest(
             "Content-Type": "application/json",
             Authorization: `Bearer ${apiKey}`,
         },
-        data: createBody(),
+        data: createBody(prompt),
     });
 
     if (response.statusCode !== 200) {
