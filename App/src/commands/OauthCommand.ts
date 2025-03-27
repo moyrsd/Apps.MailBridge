@@ -10,7 +10,7 @@ import {
 } from "@rocket.chat/apps-engine/definition/slashcommands";
 import { OAuth2Service } from "../helpers/OAuth2Service";
 import { ILogger } from "@rocket.chat/apps-engine/definition/accessors";
-import { sendMail } from "../helpers/sendMail";
+import { sendMail } from "../helpers/SendMail";
 
 export class OAuthCommand implements ISlashCommand {
     public command = "oauth";
@@ -88,43 +88,6 @@ export class OAuthCommand implements ISlashCommand {
                             .getCreator()
                             .startMessage()
                             .setText("Access token revoked successfully.")
-                            .setRoom(context.getRoom())
-                            .getMessage()
-                    );
-            } else if (args[0] === "mail") {
-                const tokenData =
-                    await this.oauth2Service.getAccessTokenForUser(user, read);
-                if (tokenData && tokenData.token) {
-                    await modify
-                        .getNotifier()
-                        .notifyUser(
-                            user,
-                            modify
-                                .getCreator()
-                                .startMessage()
-                                .setText(`Access token: ${tokenData.token}`)
-                                .setRoom(context.getRoom())
-                                .getMessage()
-                        );
-                }
-                const room = context.getRoom();
-                const accessToken = tokenData.token;
-                const mailResponse = await sendMail(
-                    room,
-                    user,
-                    read,
-                    modify,
-                    http,
-                    accessToken
-                );
-                await modify
-                    .getNotifier()
-                    .notifyUser(
-                        user,
-                        modify
-                            .getCreator()
-                            .startMessage()
-                            .setText(`${mailResponse} Mail Service Completed`)
                             .setRoom(context.getRoom())
                             .getMessage()
                     );

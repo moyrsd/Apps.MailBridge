@@ -1,8 +1,3 @@
-//---------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------
 import {
     IHttp,
     IModify,
@@ -10,11 +5,6 @@ import {
 } from "@rocket.chat/apps-engine/definition/accessors";
 import { IRoom } from "@rocket.chat/apps-engine/definition/rooms";
 import { IUser } from "@rocket.chat/apps-engine/definition/users";
-const email = {
-    to: "deepmoyrs@gmail.com",
-    subject: "Testing MailAPI",
-    body: "Hi if this works mailBridge is sorted",
-};
 
 async function createBody(to: string, subject: string, body: string) {
     const rawMessage = Buffer.from(
@@ -38,9 +28,11 @@ export async function sendMail(
     read: IRead,
     modify: IModify,
     http: IHttp,
-    accessToken: string
+    accessToken: string,
+    to: string,
+    subject: string,
+    body: string
 ) {
-    const body = await createBody(email.to, email.subject, email.body);
     const userId = "me";
     const apiEndpoint = `https://gmail.googleapis.com/gmail/v1/users/${userId}/messages/send`;
     const response = await http.post(apiEndpoint, {
@@ -48,7 +40,7 @@ export async function sendMail(
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
         },
-        data: body,
+        data: await createBody(to, subject, body),
     });
 
     if (response.statusCode !== 200) {

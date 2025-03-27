@@ -1,5 +1,4 @@
 import { IConfigurationExtend } from "@rocket.chat/apps-engine/definition/accessors";
-// New files to be created in the project root folder
 import { OAuth2Service } from "./src/helpers/OAuth2Service";
 import { OAuthCommand } from "./src/commands/OauthCommand";
 import { App } from "@rocket.chat/apps-engine/definition/App";
@@ -28,13 +27,11 @@ export class OAuthApp extends App {
 
         this.oauth2Service = new OAuth2Service(this, oauthConfig);
         await this.oauth2Service.setup(configuration);
-
-        // Register the slash command and pass the logger
         configuration.slashCommands.provideSlashCommand(
             new OAuthCommand(this.oauth2Service, this.getLogger())
         );
         configuration.slashCommands.provideSlashCommand(
-            new MailBridgeCommand()
+            new MailBridgeCommand(this.oauth2Service, this.getLogger())
         );
     }
 }
