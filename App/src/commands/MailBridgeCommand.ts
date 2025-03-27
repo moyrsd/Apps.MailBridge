@@ -1,4 +1,4 @@
-import { notifyMessage } from "../helpers/notifyMessage";
+import { notifyMessage } from "../helpers/NotifyMessage";
 import {
     IHttp,
     IModify,
@@ -8,7 +8,10 @@ import {
     ISlashCommand,
     SlashCommandContext,
 } from "@rocket.chat/apps-engine/definition/slashcommands";
-import { llmRequest } from "../helpers/createMail";
+import { llmRequest } from "../helpers/CreateMail";
+import { getThreadMessages, getRoomMessages } from "../helpers/GetMessages";
+import { createEmailPrompt } from "../constants/Prompts";
+
 export class MailBridgeCommand implements ISlashCommand {
     public command = "mailbridge";
     public i18nParamsExample = "";
@@ -21,38 +24,87 @@ export class MailBridgeCommand implements ISlashCommand {
         modify: IModify,
         http: IHttp
     ): Promise<void> {
+        const apiEndpoint =
+            "https://api.deepinfra.com/v1/openai/chat/completions";
+
+        const API_KEY = "agfxrb2BuLl0tUQBfGfkY0q3Lw7UtMVe";
         const user = context.getSender();
         const room = context.getRoom();
         const threadId = context.getThreadId();
         const [subcommand] = context.getArguments();
 
+        let messages: string;
+        if (!threadId) {
+            messages = await getRoomMessages(room, read, user, http);
+        } else {
+            messages = await getThreadMessages(
+                room,
+                read,
+                user,
+                http,
+                threadId
+            );
+        }
+
         if (!subcommand) {
             throw new Error("Error!");
         }
-
-        if (subcommand == "hello") {
-            // LLM hello
-            const apiEndpoint =
-                "https://api.deepinfra.com/v1/openai/chat/completions";
-
-            const API_KEY = "agfxrb2BuLl0tUQBfGfkY0q3Lw7UtMVe";
-            await notifyMessage(room, read, user, "Constants read", threadId);
-            const message = JSON.stringify(
-                await llmRequest(
+        switch (subcommand) {
+            case "hello":
+                // LLM hello
+                const prompt1 = "Hello";
+                await notifyMessage(
                     room,
-                    user,
                     read,
-                    modify,
-                    http,
-                    apiEndpoint,
-                    API_KEY
-                ),
-                null,
-                2
-            );
-            await notifyMessage(room, read, user, "Message read", threadId);
+                    user,
+                    "Constants read",
+                    threadId
+                );
+                const message = JSON.stringify(
+                    await llmRequest(
+                        room,
+                        user,
+                        read,
+                        modify,
+                        http,
+                        prompt1,
+                        apiEndpoint,
+                        API_KEY
+                    ),
+                    null,
+                    2
+                );
+                await notifyMessage(room, read, user, "Message read", threadId);
 
-            await notifyMessage(room, read, user, message, threadId);
+                await notifyMessage(room, read, user, message, threadId);
+                break;
+            case "mail":
+                const prompt2 = createEmailPrompt(messages);
+                await notifyMessage(
+                    room,
+                    read,
+                    user,
+                    "Constants read",
+                    threadId
+                );
+                const mailSummary = JSON.stringify(
+                    await llmRequest(
+                        room,
+                        user,
+                        read,
+                        modify,
+                        http,
+                        prompt2,
+                        apiEndpoint,
+                        API_KEY
+                    ),
+                    null,
+                    2
+                );
+                await notifyMessage(room, read, user, "Message read", threadId);
+
+                await notifyMessage(room, read, user, mailSummary, threadId);
+                break;
         }
     }
 }
