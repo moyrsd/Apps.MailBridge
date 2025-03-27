@@ -74,9 +74,7 @@ export class MailBridgeCommand implements ISlashCommand {
                     null,
                     2
                 );
-                await notifyMessage(room, read, user, "Message read", threadId);
 
-                await notifyMessage(room, read, user, message, threadId);
                 break;
             case "mail":
                 const prompt2 = createEmailPrompt(messages);
@@ -101,9 +99,23 @@ export class MailBridgeCommand implements ISlashCommand {
                     null,
                     2
                 );
-                await notifyMessage(room, read, user, "Message read", threadId);
+                const jsonString = JSON.parse(mailSummary);
+                const data = JSON.parse(jsonString);
+                await notifyMessage(
+                    room,
+                    read,
+                    user,
+                    `subject: ${data.subject}`,
+                    threadId
+                );
+                await notifyMessage(
+                    room,
+                    read,
+                    user,
+                    `body: ${data.body}`,
+                    threadId
+                );
 
-                await notifyMessage(room, read, user, mailSummary, threadId);
                 break;
         }
     }

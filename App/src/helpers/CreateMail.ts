@@ -12,7 +12,7 @@ import {
 import { notifyMessage } from "./NotifyMessage";
 function createBody(prompt: string) {
     return {
-        model: "meta-llama/Llama-3.2-11B-Vision-Instruct",
+        model: "meta-llama/Llama-3.3-70B-Instruct",
         messages: [
             {
                 role: "user",

@@ -1,23 +1,11 @@
-const EMAIL_SUMMARY_PROMPT = `Create a concise email summary from the following dialogue. Follow this structure:
+const EMAIL_SUMMARY_PROMPT = `Create a concise email summary from this dialogue. Follow ALL rules:
 
-
-
-**Strict Rules:**
-1. **DO NOT** include any commentary, explanation, or additional text outside of the JSON response.
-2. **DO NOT** wrap the JSON in backticks or any formatting symbols.
-3. **DO NOT** add any extra response indicators. **Only return valid JSON with the "subject" and "body"
-4. **DO NOT** use single quotes for JSON formatting.
-5. Ensure JSON is parseable without modification.
-6. Ensure that the body of the email is properly formatted, all are not in same line the salutation should come first, from next line main email should start and the closing notes should be in a different line 
+**Strict Requirements**
+1. Return ONLY valid JSON with lowercase keys: {"subject":"...","body":"..."}
+2. ***Only format the body and nothing else**. Dont format subject, or between json file.
+3. Dont give any other response other than the JSON file, match
 
 **Your output must be machine-readable JSON that exactly matches the required structure.**
-### **Expected JSON Structure:**
-{
-    "Subject": [1-5 word summary] ,
-    "body" :  [body should start with proper salutation,write main body summerizing all the points discussed in the Dialogue, end the email with closing notes ]
-
-    
-}
 
 Example 1:
 
@@ -31,10 +19,9 @@ Mike: Works for me.
 Lisa: Same here. I'll book the conference room.
 
 Email Summary:
-{
-    "Subject": "Q1 Sales Report - Board Presentation Tuesday",
-    "Body": "Hi Team,\n\nSarah shared the completed Q1 sales report with Mike and Lisa, highlighting a 15% YoY growth, particularly strong in APAC.\n\nKey Points:\n- Q1 sales up 15% compared to last year\n- APAC region showed strongest growth\n- Board presentation scheduled for Tuesday at 2 PM\n- Lisa will book the conference room for the presentation.\n\nBest regards,\nDeepmoy"
-}
+{"subject":"Q1 Sales Report - Board Presentation Tuesday",
+"body":"Hi Team, Sarah shared the completed Q1 sales report with Mike and Lisa, highlighting a 15% YoY growth, particularly strong in APAC. Key Points: - Q1 sales up 15% compared to last year - APAC region showed strongest growth - Board presentation scheduled for Tuesday at 2 PM - Lisa will book the conference room for the presentation. Best regards, Deepmoy"}
+
 
 -----
 
@@ -55,10 +42,9 @@ Emma: Works for me.
 David: Me too. I'll send out the invite.
 
 Email Summary:
-{
-    "Subject":"Product Launch Set for July 15th",
-    "Body":"Hello Team,\n\nTom updated Emma and David on the new product launch, confirming a July 15th launch date as approved by Marketing and QA.\n\nAction Items:\n- Emma to review press release draft by Friday EOD\n- David to schedule final team meeting for Wednesday at 10 AM\n- All hands on deck for July 15th launch\n\nPlease ensure all your respective tasks are on track for the launch date.\n\nRegards,\nDeepmoy"
-}
+{"subject":"Product Launch Set for July 15th",
+"body":"Hello Team, Tom updated Emma and David on the new product launch, confirming a July 15th launch date as approved by Marketing and QA. Action Items: - Emma to review press release draft by Friday EOD - David to schedule final team meeting for Wednesday at 10 AM - All hands on deck for July 15th launch Please ensure all your respective tasks are on track for the launch date. Regards, Deepmoy"}
+
 
 ------
 
@@ -78,24 +64,26 @@ Jake: Should we involve the senior devs in the interview process?
 Alex: Definitely. I'll speak with them tomorrow to see who's available.
 
 Email Summary:
-{
-    "Subject":"New Developer Hiring Process Kickoff",
-    "Body":"Dear Team,\n\nAlex briefed Priya and Jake on the outcome of the budget meeting, confirming approval for hiring two new developers.\n\nNext Steps:\n- Priya to draft job descriptions tonight\n- Jake to review descriptions tomorrow morning\n- HR to post job listings tomorrow\n- Priya to schedule interview slots for next week\n- Alex to coordinate senior dev involvement in interviews\n\nLet's move quickly to secure top talent. Reach out if you need any support.\n\nBest regards,\nDeepmoy"
-}
+{"subject":"New Developer Hiring Process Kickoff",
+"body":"Dear Team, Alex briefed Priya and Jake on the outcome of the budget meeting, confirming approval for hiring two new developers. Next Steps: - Priya to draft job descriptions tonight - Jake to review descriptions tomorrow morning - HR to post job listings tomorrow - Priya to schedule interview slots for next week - Alex to coordinate senior dev involvement in interviews Let's move quickly to secure top talent. Reach out if you need any support. Best regards, Deepmoy"}
+
+
 
 
 
 
 ---
 
-Now process this dialogue:
+Now process this dialogue:**I repeat the output should not be formatted**
 
 Dialogue: ###
 {dialogue}
 ###
  
-Email Summary: `;
+Email Summary:
+`;
 
 export function createEmailPrompt(dialogue: string): string {
     return EMAIL_SUMMARY_PROMPT.replace("{dialogue}", dialogue);
 }
+
