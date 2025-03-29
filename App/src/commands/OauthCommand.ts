@@ -8,9 +8,9 @@ import {
     ISlashCommand,
     SlashCommandContext,
 } from "@rocket.chat/apps-engine/definition/slashcommands";
-import { OAuth2Service } from "../helpers/OAuth2Service";
+import { OAuth2Service } from "../services/OAuth2Service";
 import { ILogger } from "@rocket.chat/apps-engine/definition/accessors";
-import { sendMail } from "../helpers/SendMail";
+import { sendMail } from "../services/SendMail";
 
 export class OAuthCommand implements ISlashCommand {
     public command = "oauth";

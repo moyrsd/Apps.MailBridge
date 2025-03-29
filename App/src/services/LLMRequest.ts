@@ -9,7 +9,7 @@ import {
     ISlashCommand,
     SlashCommandContext,
 } from "@rocket.chat/apps-engine/definition/slashcommands";
-import { notifyMessage } from "./NotifyMessage";
+import { notifyMessage } from "../helpers/NotifyMessage";
 function createBody(prompt: string) {
     return {
         model: "meta-llama/Llama-3.3-70B-Instruct",

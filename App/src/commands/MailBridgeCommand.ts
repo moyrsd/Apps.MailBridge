@@ -8,12 +8,12 @@ import {
     ISlashCommand,
     SlashCommandContext,
 } from "@rocket.chat/apps-engine/definition/slashcommands";
-import { llmRequest } from "../helpers/CreateMail";
+import { llmRequest } from "../services/LLMRequest";
 import { getThreadMessages, getRoomMessages } from "../helpers/GetMessages";
-import { createEmailPrompt } from "../constants/Prompts";
-import { OAuth2Service } from "../helpers/OAuth2Service";
+import { createEmailPrompt } from "../constants/prompts/EmailSummaryPrompt";
+import { OAuth2Service } from "../services/OAuth2Service";
 import { ILogger } from "@rocket.chat/apps-engine/definition/accessors";
-import { sendMail } from "../helpers/SendMail";
+import { sendMail } from "../services/SendMail";
 export class MailBridgeCommand implements ISlashCommand {
     public command = "mailbridge";
     public i18nParamsExample = "";
