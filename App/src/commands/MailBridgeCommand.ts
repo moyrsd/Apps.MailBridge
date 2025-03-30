@@ -31,10 +31,6 @@ export class MailBridgeCommand implements ISlashCommand {
         modify: IModify,
         http: IHttp
     ): Promise<void> {
-        const apiEndpoint =
-            "https://api.deepinfra.com/v1/openai/chat/completions";
-
-        const API_KEY = "4ZdqVwe3NCwBXAjuQEEe5te5rluXx5Ko";
         const user = context.getSender();
         const room = context.getRoom();
         const threadId = context.getThreadId();
@@ -53,12 +49,8 @@ export class MailBridgeCommand implements ISlashCommand {
             );
         }
 
-        if (!action) {
-            throw new Error("Error!");
-        }
         switch (action) {
             case "hello":
-                // LLM hello
                 const prompt1 = "Hello";
                 await notifyMessage(
                     room,
@@ -68,19 +60,11 @@ export class MailBridgeCommand implements ISlashCommand {
                     threadId
                 );
                 const message = JSON.stringify(
-                    await llmRequest(
-                        room,
-                        user,
-                        read,
-                        modify,
-                        http,
-                        prompt1,
-                        apiEndpoint,
-                        API_KEY
-                    ),
+                    await llmRequest(room, user, read, modify, http, prompt1),
                     null,
                     2
                 );
+                await notifyMessage(room, read, user, message, threadId);
 
                 break;
             case "mail":
@@ -103,16 +87,7 @@ export class MailBridgeCommand implements ISlashCommand {
                     threadId
                 );
                 const mailSummary = JSON.stringify(
-                    await llmRequest(
-                        room,
-                        user,
-                        read,
-                        modify,
-                        http,
-                        prompt2,
-                        apiEndpoint,
-                        API_KEY
-                    ),
+                    await llmRequest(room, user, read, modify, http, prompt2),
                     null,
                     2
                 );

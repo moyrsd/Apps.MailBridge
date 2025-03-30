@@ -5,14 +5,13 @@ import {
 } from "@rocket.chat/apps-engine/definition/accessors";
 import { IRoom } from "@rocket.chat/apps-engine/definition/rooms";
 import { IUser } from "@rocket.chat/apps-engine/definition/users";
-import {
-    ISlashCommand,
-    SlashCommandContext,
-} from "@rocket.chat/apps-engine/definition/slashcommands";
+
 import { notifyMessage } from "../helpers/NotifyMessage";
-function createBody(prompt: string) {
+import { AppSettingsEnum } from "../settings/settings";
+
+function createBody(model: string, prompt: string) {
     return {
-        model: "meta-llama/Llama-3.3-70B-Instruct",
+        model: model,
         messages: [
             {
                 role: "user",
@@ -29,16 +28,28 @@ export async function llmRequest(
     modify: IModify,
     http: IHttp,
     prompt: string,
-    apiEndpoint: string,
-    apiKey: string,
     threadId?: string
 ) {
+    const model = await read
+        .getEnvironmentReader()
+        .getSettings()
+        .getValueById(AppSettingsEnum.LlmModelId);
+
+    const apiEndpoint = await read
+        .getEnvironmentReader()
+        .getSettings()
+        .getValueById(AppSettingsEnum.LlmProviderId);
+
+    const apiKey = await read
+        .getEnvironmentReader()
+        .getSettings()
+        .getValueById(AppSettingsEnum.LlmApiKeyId);
     const response = await http.post(apiEndpoint, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${apiKey}`,
         },
-        data: createBody(prompt),
+        data: createBody(model, prompt),
     });
 
     if (response.statusCode !== 200) {

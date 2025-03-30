@@ -1,5 +1,5 @@
-export const oauthConfig = {
-    alias: "test",
+export const GoogleoauthConfig = {
+    alias: "google",
     accessTokenUri: "https://oauth2.googleapis.com/token",
     authUri: "https://accounts.google.com/o/oauth2/v2/auth",
     refreshTokenUri: "https://oauth2.googleapis.com/token",
