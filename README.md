@@ -1,5 +1,5 @@
 <div align="center">
-<img width=30% src="https://github.com/user-attachments/assets/a92f27b9-5101-4725-8311-a0e6ada0edc7" alt="rocket-chat">
+<img width=40% src="https://github.com/user-attachments/assets/a92f27b9-5101-4725-8311-a0e6ada0edc7" alt="rocket-chat">
 </div>
 
 <div align="center">
@@ -8,7 +8,7 @@
 </div>
 <br />
 <div align="center">
-  <img width=30% src="https://github.com/moyrsd/Apps.MailBridge/blob/6b83c77dc41005764857ddde0fc78f72c739c2fb/App/icon.png" alt="mailbridge icon">
+  <img width=20% src="https://github.com/moyrsd/Apps.MailBridge/blob/6b83c77dc41005764857ddde0fc78f72c739c2fb/App/icon.png" alt="mailbridge icon">
   <h3 align="center">MailBrige Feature for RocketChat</h3>
 
   <p align="center">
@@ -20,6 +20,20 @@
   </p>
 </div>
 
+<!-- ABOUT THE PROJECT -->
+
+##  About The Project:
+
+```
+
+Messaging systems such as Rocket.Chat were supposed to be replacing legacy email for communications and collaboration
+since the early nineteen nineties. But even after three decades of evolution and struggle, half the world still hangs
+onto legacy email worldwide despite most have grown up with SMS and asynchronous messaging.
+
+This project bridges the great divide most naturally with a Rocket.Chat App that responds to natural language
+instructions and brings thelegacy email world right into every Rocket.Chat conversation for every user.
+
+```
 
 
 ## 📜 Getting Started
@@ -57,20 +71,6 @@
    - For Authorized redirect URI put
      `http://${serverurl}/api/apps/public/7e8a7a3b-2653-4731-9541-45c51ab3582c/google-callback `
     
-<!-- ABOUT THE PROJECT -->
-
-## ✅ About The Project:
-
-```
-
-Messaging systems such as Rocket.Chat were supposed to be replacing legacy email for communications and collaboration
-since the early nineteen nineties. But even after three decades of evolution and struggle, half the world still hangs
-onto legacy email worldwide despite most have grown up with SMS and asynchronous messaging.
-
-This project bridges the great divide most naturally with a Rocket.Chat App that responds to natural language
-instructions and brings thelegacy email world right into every Rocket.Chat conversation for every user.
-
-```
 
 ## :rocket: Usage :
 
@@ -134,6 +134,7 @@ src/
 
 Here are some links to examples and documentation:
 -   [Get gmail api]( https://developers.google.com/gmail/api/guides)
+-   [Postman GMAIL API documentation](https://www.postman.com/api-evangelist/google/documentation/sauwwob/gmail-api)
 -   [Rocket.Chat Apps TypeScript Definitions Documentation](https://rocketchat.github.io/Rocket.Chat.Apps-engine/)
 -   [Rocket.Chat Apps TypeScript Definitions Repository](https://github.com/RocketChat/Rocket.Chat.Apps-engine)
 -   [Example Rocket.Chat Apps](https://github.com/graywolf336/RocketChatApps)
