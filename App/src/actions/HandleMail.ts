@@ -3,6 +3,7 @@ import { llmRequest } from "../services/LLMRequest";
 import {
     IHttp,
     IModify,
+    IPersistence,
     IRead,
 } from "@rocket.chat/apps-engine/definition/accessors";
 import { IRoom } from "@rocket.chat/apps-engine/definition/rooms";
@@ -19,6 +20,7 @@ export async function HandleMail(
     emailAddress: string,
     messages: string,
     oauth2Service: OAuth2Service,
+    persis: IPersistence,
     threadId?: string
 ) {
     if (!emailAddress) {
@@ -45,14 +47,38 @@ export async function HandleMail(
         read,
         user,
         `Sending the following mail to ${emailAddress}
-                    subject: ${data.subject}`,
+                    subject: ${data.subject}
+                    body: ${data.body}`,
         threadId
     );
-    await notifyMessage(room, read, user, `body: ${data.body}`, threadId);
+    const accessToken = await GetAuthToken(
+        room,
+        read,
+        user,
+        oauth2Service,
+        threadId
+    );
 
-    //////////////////////////////////////////////////////////
-    // Sending Mail
+    await MailResponse(
+        room,
+        read,
+        user,
+        modify,
+        http,
+        emailAddress,
+        accessToken,
+        data.subject,
+        data.body
+    );
+}
 
+async function GetAuthToken(
+    room: IRoom,
+    read: IRead,
+    user: IUser,
+    oauth2Service: OAuth2Service,
+    threadId?: string
+) {
     const tokenData = await oauth2Service.getAccessTokenForUser(user, read);
     if (!tokenData || !tokenData.token) {
         await notifyMessage(
@@ -62,8 +88,23 @@ export async function HandleMail(
             `Pleas login with your gmail account`,
             threadId
         );
+        return;
     }
-    const accessToken = tokenData.token;
+    return tokenData.token;
+}
+
+async function MailResponse(
+    room: IRoom,
+    read: IRead,
+    user: IUser,
+    modify: IModify,
+    http: IHttp,
+    emailAddress: string,
+    accessToken: string,
+    subject: string,
+    body: string,
+    threadId?: string
+) {
     const mailResponse = JSON.stringify(
         await sendMail(
             room,
@@ -73,8 +114,8 @@ export async function HandleMail(
             http,
             accessToken,
             emailAddress,
-            data.subject,
-            data.body
+            subject,
+            body
         )
     );
     await notifyMessage(

@@ -66,6 +66,7 @@ export class MailBridgeCommand implements ISlashCommand {
                     emailAddress,
                     messages,
                     this.oauth2Service,
+                    persis,
                     threadId
                 );
                 break;
