@@ -34,16 +34,26 @@ export async function llmRequest(
         .getEnvironmentReader()
         .getSettings()
         .getValueById(AppSettingsEnum.LlmModelId);
-
     const apiEndpoint = await read
         .getEnvironmentReader()
         .getSettings()
         .getValueById(AppSettingsEnum.LlmProviderId);
-
     const apiKey = await read
         .getEnvironmentReader()
         .getSettings()
         .getValueById(AppSettingsEnum.LlmApiKeyId);
+
+    if (!model || !apiEndpoint || !apiKey) {
+        await notifyMessage(
+            room,
+            read,
+            user,
+            "Missing LLM configuration settings.",
+            threadId
+        );
+        throw new Error("Missing LLM configuration settings.");
+    }
+
     const response = await http.post(apiEndpoint, {
         headers: {
             "Content-Type": "application/json",
@@ -60,6 +70,7 @@ export async function llmRequest(
             `API error: ${response.statusCode}`,
             threadId
         );
+        throw new Error(`API error: ${response.statusCode}`);
     }
 
     return response.data.choices[0].message.content;
