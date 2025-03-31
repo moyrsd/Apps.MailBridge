@@ -1,7 +1,7 @@
-import { notifyMessage } from "../helpers/NotifyMessage";
 import {
     IHttp,
     IModify,
+    IPersistence,
     IRead,
 } from "@rocket.chat/apps-engine/definition/accessors";
 import {
@@ -13,6 +13,7 @@ import { OAuth2Service } from "../services/OAuth2Service";
 import { ILogger } from "@rocket.chat/apps-engine/definition/accessors";
 import { HelloWorld } from "../actions/HelloWorld";
 import { HandleMail } from "../actions/HandleMail";
+import { HandleAuth } from "../actions/HandleAuth";
 export class MailBridgeCommand implements ISlashCommand {
     public command = "mailbridge";
     public i18nParamsExample = "";
@@ -28,12 +29,14 @@ export class MailBridgeCommand implements ISlashCommand {
         context: SlashCommandContext,
         read: IRead,
         modify: IModify,
-        http: IHttp
+        http: IHttp,
+        persis: IPersistence
     ): Promise<void> {
         const user = context.getSender();
         const room = context.getRoom();
         const threadId = context.getThreadId();
-        const [action, emailAddress] = context.getArguments();
+        const args = context.getArguments();
+        const action = args[0];
 
         let messages: string;
         if (!threadId) {
@@ -53,6 +56,7 @@ export class MailBridgeCommand implements ISlashCommand {
                 await HelloWorld(room, read, user, modify, http, threadId);
                 break;
             case "mail":
+                const emailAddress = args[1];
                 await HandleMail(
                     room,
                     read,
@@ -65,6 +69,19 @@ export class MailBridgeCommand implements ISlashCommand {
                     threadId
                 );
                 break;
+            case "auth":
+                const authAction = args[1];
+                await HandleAuth(
+                    room,
+                    read,
+                    user,
+                    modify,
+                    http,
+                    authAction,
+                    this.oauth2Service,
+                    persis,
+                    threadId
+                );
         }
     }
 }

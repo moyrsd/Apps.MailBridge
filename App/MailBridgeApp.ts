@@ -1,6 +1,5 @@
 import { IConfigurationExtend } from "@rocket.chat/apps-engine/definition/accessors";
 import { OAuth2Service } from "./src/services/OAuth2Service";
-import { OAuthCommand } from "./src/commands/OauthCommand";
 import { App } from "@rocket.chat/apps-engine/definition/App";
 import { MailBridgeCommand } from "./src/commands/MailBridgeCommand";
 import { GoogleoauthConfig } from "./src/config/GoogleOauthconfig";
@@ -21,9 +20,6 @@ export class OAuthApp extends App {
                 new MailBridgeCommand(this.oauth2Service, this.getLogger())
             ),
 
-            configuration.slashCommands.provideSlashCommand(
-                new OAuthCommand(this.oauth2Service, this.getLogger())
-            ),
         ]);
     }
 }
