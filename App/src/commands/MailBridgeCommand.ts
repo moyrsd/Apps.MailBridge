@@ -14,6 +14,8 @@ import { ILogger } from "@rocket.chat/apps-engine/definition/accessors";
 import { HelloWorld } from "../handlers/HelloWorld";
 import { HandleMail } from "../handlers/HandleMail";
 import { HandleAuth } from "../handlers/HandleAuth";
+import { HandleContact } from "../handlers/HandleContact";
+import { App } from "@rocket.chat/apps-engine/definition/App";
 export class MailBridgeCommand implements ISlashCommand {
     public command = "mailbridge";
     public i18nParamsExample = "";
@@ -34,6 +36,7 @@ export class MailBridgeCommand implements ISlashCommand {
     ): Promise<void> {
         const user = context.getSender();
         const room = context.getRoom();
+        const triggerId = context.getTriggerId();
         const threadId = context.getThreadId();
         const args = context.getArguments();
         const action = args[0];
@@ -83,6 +86,8 @@ export class MailBridgeCommand implements ISlashCommand {
                     persis,
                     threadId
                 );
+            case "contact":
+                await HandleContact(room,read,user,modify,http,triggerId,triggerId);
         }
     }
 }
