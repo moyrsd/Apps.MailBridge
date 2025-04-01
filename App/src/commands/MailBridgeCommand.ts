@@ -11,9 +11,9 @@ import {
 import { getThreadMessages, getRoomMessages } from "../helpers/GetMessages";
 import { OAuth2Service } from "../services/OAuth2Service";
 import { ILogger } from "@rocket.chat/apps-engine/definition/accessors";
-import { HelloWorld } from "../actions/HelloWorld";
-import { HandleMail } from "../actions/HandleMail";
-import { HandleAuth } from "../actions/HandleAuth";
+import { HelloWorld } from "../handlers/HelloWorld";
+import { HandleMail } from "../handlers/HandleMail";
+import { HandleAuth } from "../handlers/HandleAuth";
 export class MailBridgeCommand implements ISlashCommand {
     public command = "mailbridge";
     public i18nParamsExample = "";

@@ -4,7 +4,7 @@ import { App } from "@rocket.chat/apps-engine/definition/App";
 import { MailBridgeCommand } from "./src/commands/MailBridgeCommand";
 import { GoogleoauthConfig } from "./src/config/GoogleOauthconfig";
 import { settings } from "./src/settings/settings";
-export class OAuthApp extends App {
+export class MailBridgeApp extends App {
     private oauth2Service: OAuth2Service;
 
     protected async extendConfiguration(
