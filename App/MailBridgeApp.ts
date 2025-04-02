@@ -4,8 +4,10 @@ import { App } from "@rocket.chat/apps-engine/definition/App";
 import { MailBridgeCommand } from "./src/commands/MailBridgeCommand";
 import { GoogleoauthConfig } from "./src/config/GoogleOauthconfig";
 import { settings } from "./src/settings/settings";
+import { UIKitInteractionContext } from "@rocket.chat/apps-engine/definition/uikit";
 export class MailBridgeApp extends App {
     private oauth2Service: OAuth2Service;
+    private context: UIKitInteractionContext;
 
     protected async extendConfiguration(
         configuration: IConfigurationExtend
@@ -17,9 +19,12 @@ export class MailBridgeApp extends App {
                 configuration.settings.provideSetting(setting)
             ),
             configuration.slashCommands.provideSlashCommand(
-                new MailBridgeCommand(this.oauth2Service, this.getLogger())
+                new MailBridgeCommand(
+                    this,
+                    this.oauth2Service,
+                    this.getLogger()
+                )
             ),
-
         ]);
     }
 }

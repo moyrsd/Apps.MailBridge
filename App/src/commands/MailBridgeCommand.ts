@@ -23,6 +23,7 @@ export class MailBridgeCommand implements ISlashCommand {
     public providesPreview = false;
 
     constructor(
+        public readonly app: App,
         private readonly oauth2Service: OAuth2Service,
         private readonly logger: ILogger
     ) {}
@@ -87,7 +88,17 @@ export class MailBridgeCommand implements ISlashCommand {
                     threadId
                 );
             case "contact":
-                await HandleContact(room,read,user,modify,http,triggerId,triggerId);
+                await HandleContact(
+                    this.app,
+                    room,
+                    read,
+                    user,
+                    modify,
+                    http,
+                    persis,
+                    triggerId,
+                    threadId
+                );
         }
     }
 }
