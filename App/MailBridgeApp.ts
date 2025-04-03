@@ -1,10 +1,11 @@
-import { IConfigurationExtend } from "@rocket.chat/apps-engine/definition/accessors";
+import { IConfigurationExtend, IHttp, IModify, IPersistence, IRead } from "@rocket.chat/apps-engine/definition/accessors";
 import { OAuth2Service } from "./src/services/OAuth2Service";
 import { App } from "@rocket.chat/apps-engine/definition/App";
 import { MailBridgeCommand } from "./src/commands/MailBridgeCommand";
 import { GoogleoauthConfig } from "./src/config/GoogleOauthconfig";
 import { settings } from "./src/settings/settings";
-import { UIKitInteractionContext } from "@rocket.chat/apps-engine/definition/uikit";
+import { IUIKitResponse, UIKitBlockInteractionContext, UIKitInteractionContext } from "@rocket.chat/apps-engine/definition/uikit";
+import { ExecuteBlockActionHandler } from "./src/handlers/ExecuteBlockActionHandler";
 export class MailBridgeApp extends App {
     private oauth2Service: OAuth2Service;
     private context: UIKitInteractionContext;
@@ -26,5 +27,23 @@ export class MailBridgeApp extends App {
                 )
             ),
         ]);
+    }
+    public async executeBlockActionHandler(
+        context: UIKitBlockInteractionContext,
+        read: IRead,
+        http: IHttp,
+        persistence: IPersistence,
+        modify: IModify
+    ): Promise<IUIKitResponse> {
+        const handler = new ExecuteBlockActionHandler(
+            this,
+            read,
+            http,
+            persistence,
+            modify,
+            context
+        );
+
+        return await handler.handleActions();
     }
 }

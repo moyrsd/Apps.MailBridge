@@ -14,6 +14,7 @@ import { InputBlock, PlainTextInputElement } from "@rocket.chat/ui-kit";
 import { CreateInputBlock } from "../blocks/InputBlock";
 import { CreatePlainTextElement } from "../elements/PlainTextElement";
 import { CreatePlainTextInputElement } from "../elements/PlainTextInput";
+import { CreateContacModaltButtonEnum } from "../../enums/ui/modals/CreateContactModalEnum";
 export async function CreateNewContactModal(
     app: App,
     user: IUser,
@@ -60,8 +61,10 @@ export async function CreateNewContactModal(
     blocks.push(NameInputBlock, EmailInputBlock);
     const modalCreateButton = CreateButton(
         app.getID(),
-        "modal_create_button",
-        "Create"
+        CreateContacModaltButtonEnum.BUTTON_NAME,
+        CreateContacModaltButtonEnum.BUTTON_TEXT,
+        CreateContacModaltButtonEnum.ACTION_ID,
+        CreateContacModaltButtonEnum.BLOCK_ID
     );
 
     const modal = modify.getUiController().openSurfaceView(

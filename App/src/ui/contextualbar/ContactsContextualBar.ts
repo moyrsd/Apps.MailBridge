@@ -12,7 +12,7 @@ import { App } from "@rocket.chat/apps-engine/definition/App";
 import { CreateButton } from "../elements/ButtonElement";
 import { ActionsBlock } from "@rocket.chat/ui-kit";
 import { CreateActionBlock } from "../blocks/ActionBlock";
-
+import { CreateNewContactButtonEnum } from "../../enums/ui/contextualbar/CreateNewContactButtonEnum";
 export async function ContactsContextualBar(
     app: App,
     user: IUser,
@@ -25,8 +25,10 @@ export async function ContactsContextualBar(
     const blocks: ActionsBlock[] = [];
     const createNewContactButton = CreateButton(
         app.getID(),
-        "create_new_contact",
-        "Create new contact"
+        CreateNewContactButtonEnum.BUTTON_NAME,
+        CreateNewContactButtonEnum.BUTTON_TEXT,
+        CreateNewContactButtonEnum.ACTION_ID,
+        CreateNewContactButtonEnum.BLOCK_ID
     );
     const createButtonAction = CreateActionBlock([createNewContactButton]);
     blocks.push(createButtonAction);
